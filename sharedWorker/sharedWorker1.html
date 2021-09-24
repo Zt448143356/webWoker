@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>sharedWorker1</title>
+</head>
+
+<body>
+  <div id="container">
+
+  </div>
+  <input type="text" id="number3">
+  <button onclick="send()">send</button>
+</body>
+<script>
+  let squareNumber = document.querySelector('#number3');
+  let container = document.querySelector('#container');
+  let myWorker;
+
+  if (!!window.SharedWorker) {
+    myWorker = new SharedWorker("./sharedWorker.js");
+    myWorker.port.onmessage = function (e) {
+      console.log('Message received from worker' + e.data);
+      let msgData = JSON.parse(e.data);
+      let msg = `sender:${msgData.sender},content:${msgData.content}`;
+      let ele = document.createElement("p");
+      ele.innerHTML = msg;
+      container.appendChild(ele);
+    }
+  }
+  function send() {
+    let msgData = {
+      sender: "index",
+      content: squareNumber.value
+    }
+    let msg = JSON.stringify(msgData);
+    myWorker.port.postMessage(msg);
+  }
+</script>
+
+</html>

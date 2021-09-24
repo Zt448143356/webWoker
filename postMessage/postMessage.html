@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>dedicatedWorker</title>
+</head>
+<body>
+  <div>
+    work.postMessage的Demo
+  </div>
+</body>
+
+<script type='text/javascript'>
+  if (typeof (Worker) === 'undefined')	// 使用Worker前检查一下浏览器是否支持
+    document.writeln(' Sorry! No Web Worker support.. ');
+  else {
+    function createWorker(f) {
+      var blob = new Blob([f]);
+      var url = window.URL.createObjectURL(blob);
+      var worker = new Worker(url);
+      return worker;
+    }
+    let workerFile = `
+      self.onmessage = function (e) {
+        let uInt8Array = new Uint8Array(e.data);
+        console.log(uInt8Array);
+        postMessage('Inside worker.js: uInt8Array.toString() = ' + uInt8Array.toString());
+        postMessage('Inside worker.js: uInt8Array.byteLength = ' + uInt8Array.byteLength);
+      };
+    `;
+    reCreateWorker();
+
+    function reCreateWorker() {
+      if (window.w) {
+        window.w.terminate();
+      }
+      window.w = createWorker(workerFile);
+      let ab = new ArrayBuffer(1000000);
+      let uInt8Array = new Uint8Array(ab);
+      for (let i = 0; i < uInt8Array.length; ++i) {
+        uInt8Array[i] = i * 2; // [0, 2, 4, 6, 8,...];
+      }
+      console.log('发送前，转移权限前', ab);
+      window.w.postMessage(ab, [ab]);
+      console.log('发送后，转移权限后', ab);
+      window.w.onmessage = ev => {
+        console.log(ev.data);
+      }
+
+      window.w.onerror = err => {
+        w.terminate();
+        console.log(err.filename, err.lineno, err.message); // 发生错误的文件名、行号、错误内容
+      }
+    }
+  }
+</script>

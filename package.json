@@ -1,0 +1,26 @@
+{
+  "name": "web-worker-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "eslint": "eslint --cache --ext .js --ext .jsx --ignore-path .eslintignore .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Zt448143356",
+  "license": "ISC",
+  "eslintConfig": {
+    "extends": "aliyun"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.32.0",
+    "eslint-config-aliyun": "^2.0.3",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-react": "^7.25.2"
+  }
+}

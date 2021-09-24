@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>dedicatedWorker</title>
+</head>
+
+<body>
+  <!--主线程，HTML文件的body标签中-->
+  <div>
+    Worker 输出内容：<span id='app'></span>
+    <input type='text' title='' id='msg'>
+    <button onclick='sendMessage()'>发送</button>
+    <button onclick='stopWorker()'>stop!</button>
+    <button onclick='reCreateWorker()'>重来</button>
+  </div>
+</body>
+
+<script type='text/javascript'>
+  if (typeof (Worker) === 'undefined')	// 使用Worker前检查一下浏览器是否支持
+    document.writeln(' Sorry! No Web Worker support.. ')
+  else {
+    function createWorker(f) {
+      let blob = new Blob([f]);
+      let url = window.URL.createObjectURL(blob);
+      let worker = new Worker(url);
+      return worker;
+    }
+    let workerFile = `
+      let i = 1;
+      function simpleCount() {
+        i++;
+        self.postMessage(i);
+        timeoutID = setTimeout(simpleCount, 1000);
+      }
+      simpleCount();
+      self.onmessage = ev => {
+        postMessage(ev.data + ' 就这，马上变回来！');
+      }
+    `;
+    reCreateWorker();
+
+    function sendMessage() {
+      const msg = document.getElementById('msg');
+      window.w.postMessage(msg.value);
+    }
+
+    function stopWorker() {
+      window.w.terminate();
+    }
+    function reCreateWorker() {
+      if (window.w) {
+        window.w.terminate();
+      }
+      window.w = createWorker(workerFile);
+      window.w.onmessage = ev => {
+        document.getElementById('app').innerHTML = ev.data;
+      }
+
+      window.w.onerror = err => {
+        w.terminate();
+        console.log(err.filename, err.lineno, err.message); // 发生错误的文件名、行号、错误内容
+      }
+    }
+  }
+</script>
