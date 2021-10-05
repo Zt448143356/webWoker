@@ -1,14 +1,10 @@
 var CACHE_NAME = 'my-site-cache-v1';
 var urlsToCache = [
-  // '/',
-  // '/styles/main.css',
-  // '/script/main.js'
   '/simple/baidu.png',
   '/simple/cuowu.jpeg'
 ];
 
 self.addEventListener('install', (event) => {
-  // Perform install steps
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(function (cache) {
@@ -23,7 +19,7 @@ self.addEventListener('fetch', (event) => {
   if (event.request.url.match(/.html$/)) {
     fetch(event.request)
       .catch(function () {
-        return caches.match('/aaa/cuowu.jpeg');
+        return caches.match('/simple/cuowu.jpeg');
       });
   } else {
     event.respondWith(
@@ -35,7 +31,7 @@ self.addEventListener('fetch', (event) => {
           });
         });
       }).catch(function () {
-        return caches.match('/aaa/cuowu.jpeg');
+        return caches.match('/simple/cuowu.jpeg');
       })
     );
   }
