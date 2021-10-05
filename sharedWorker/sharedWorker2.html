@@ -21,7 +21,7 @@
   let myWorker;
 
   if (!!window.SharedWorker) {
-    myWorker = new SharedWorker("./sharedWorker.js");
+    myWorker = new SharedWorker("./sharedWorker.js", {name: 'sharedWorker'});
     myWorker.port.onmessage = function (e) {
       console.log('Message received from worker' + e.data);
       let msgData = JSON.parse(e.data);

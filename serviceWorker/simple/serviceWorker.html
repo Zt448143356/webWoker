@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>sharedWorker1</title>
+</head>
+
+<body>
+  <div id="container">
+    <img src='./baidu.png' />
+    <div id="myDiv">空</div>
+    <button type="button" onclick="send()">发起请求</button>
+  </div>
+</body>
+<script>
+
+  let send = () => {
+    let xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = () => {
+      if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+        console.log(xmlhttp.response);
+      }
+    }
+    xmlhttp.open('GET', '/hello', true);
+    xmlhttp.send();
+  }
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('/simple/sw.js', { scope: '/simple/' }).then(function (registration) {
+        // Registration was successful
+        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+      }, function (err) {
+        // registration failed :(
+        console.log('ServiceWorker registration failed: ', err);
+      });
+    });
+  }
+</script>
+
+</html>

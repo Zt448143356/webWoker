@@ -6,6 +6,11 @@ app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
 
+
+app.get('/hello', function (req, res) {
+  res.json({data: 'data'});
+});
+
 app.use(express.static('dedicatedWorker'));
 
 app.use(express.static('postMessage'));
