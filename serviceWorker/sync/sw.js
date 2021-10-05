@@ -23,9 +23,6 @@ const simpleEvent = new SimpleEvent();
 
 var CACHE_NAME = 'my-site-cache-v1';
 var urlsToCache = [
-  // '/',
-  // '/styles/main.css',
-  // '/script/main.js'
   '/sync/google.jpg',
 ];
 
