@@ -20,6 +20,7 @@
 </body>
 
 <script type='text/javascript'>
+  let m = null;
   if (typeof (Worker) === 'undefined')	// 使用Worker前检查一下浏览器是否支持
     document.writeln(' Sorry! No Web Worker support.. ')
   else {
@@ -38,6 +39,9 @@
       }
       simpleCount();
       self.onmessage = ev => {
+        console.log(ev.data);
+        ev.data.a = '2';
+        console.log(ev.data);
         postMessage(ev.data + ' 就这，马上变回来！');
       }
     `;
@@ -45,7 +49,18 @@
 
     function sendMessage() {
       const msg = document.getElementById('msg');
-      window.w.postMessage(msg.value);
+      let data = {
+        data: msg.value,
+        date: new Date(),
+        a: '1',
+        b: undefined,
+        c: () => {},
+        d: /js$/,
+        e: Error(1),
+      }
+      m = data;
+      console.log(m);
+      window.w.postMessage(m);
     }
 
     function stopWorker() {
@@ -58,6 +73,7 @@
       window.w = createWorker(workerFile);
       window.w.onmessage = ev => {
         document.getElementById('app').innerHTML = ev.data;
+        console.log(m);
       }
 
       window.w.onerror = err => {
