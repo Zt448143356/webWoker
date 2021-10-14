@@ -27,4 +27,12 @@
 
 ### `serviceWorker`
 
-* 
+* 这是一个`serviceWork`的`Demo`代码
+  1. `simple`文件夹
+     * 一些简单的`serviceWork`的使用
+  
+  2. `sync`文件夹
+     * `sync`api;背景同步的使用
+
+  3. `push`文件夹
+     * `push`api;通知推送的使用
