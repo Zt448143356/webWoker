@@ -40,7 +40,7 @@
       simpleCount();
       self.onmessage = ev => {
         console.log(ev.data);
-        ev.data.a = '2';
+        ev.data.f.aa = '2';
         console.log(ev.data);
         postMessage(ev.data + ' 就这，马上变回来！');
       }
@@ -54,9 +54,12 @@
         date: new Date(),
         a: '1',
         b: undefined,
-        c: () => {},
+        // c: () => {},
         d: /js$/,
         e: Error(1),
+        f: {
+          aa: '1'
+        }
       }
       m = data;
       console.log(m);
